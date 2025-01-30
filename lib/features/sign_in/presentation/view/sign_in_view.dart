@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/navigation/bottom_navigation_bar.dart';
 import '../../../../core/widgets/auth_content.dart';
-import '../../../forgot_password/presentation/views/forgot_password_view.dart';
-import '../../../sign_up/presentation/views/sign_up_view.dart';
+import '../../../forgot_password/presentation/view/forgot_password_view.dart';
+import '../../../sign_up/presentation/view/sign_up_view.dart';
 
 class SignInView extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class SignInView extends StatelessWidget {
       image: 'assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png',      fields: ['Email', 'Password'],
       buttonText: 'Next',
       onButtonPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordView()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MainView()));
       },
       bottomText: "Don't have an account? ",
       bottomButtonText: 'Sign Up',

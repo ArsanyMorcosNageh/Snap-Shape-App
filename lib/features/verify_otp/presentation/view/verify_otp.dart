@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart'; // مكتبة لإدخال رمز التحقق
-import '../../../../core/widgets/auth_content.dart';
 import '../../../../core/widgets/verify_content.dart';
-import '../../../reset_password/presentation/views/reset_password_view.dart';
+import '../../../reset_password/presentation/view/reset_password_view.dart';
 
 class VerifyOTP extends StatelessWidget {
   @override

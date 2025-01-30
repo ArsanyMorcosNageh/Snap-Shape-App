@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:snap_and_shape/features/verify_otp/presentation/views/verify_otp.dart';
+import 'package:snap_and_shape/features/verify_otp/presentation/view/verify_otp.dart';
 
 import '../../../../core/widgets/auth_content.dart';
-import '../../../sign_in/presentation/views/sign_in_view.dart';
+import '../../../sign_in/presentation/view/sign_in_view.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   @override
