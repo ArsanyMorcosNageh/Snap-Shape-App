@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:snap_and_shape/features/questionaire/presentation/view/questionaire_view.dart';
 
 import '../../../../core/navigation/bottom_navigation_bar.dart';
 import '../../../../core/widgets/auth_content.dart';
@@ -14,7 +15,7 @@ class SignInView extends StatelessWidget {
       image: 'assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png',      fields: ['Email', 'Password'],
       buttonText: 'Next',
       onButtonPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MainView()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionScreen()));
       },
       bottomText: "Don't have an account? ",
       bottomButtonText: 'Sign Up',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snap_and_shape/core/navigation/bottom_navigation_bar.dart';
+import 'package:snap_and_shape/features/sign_in/presentation/view/sign_in_view.dart';
 import '../../../../core/utils/clip_paths.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -47,7 +48,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     await prefs.setBool('onboarding_completed', true);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) =>  MainView(),
+        builder: (context) =>  SignInView(),
       ),
     );
   }

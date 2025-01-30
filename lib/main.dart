@@ -31,27 +31,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      //home : Test(),
-      // home :SplashScreen(),
-      home: SignUpView(),
-      //     home: const OnboardingView(),
+
+   //   home: SplashScreen(),
+        home: const OnboardingView(),
       //home: onboardingCompleted ? const HomeView() : const OnboardingView(),
     );
   }
 }
 
-class Test extends StatelessWidget {
-  const Test({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(children: [
-        SizedBox(
-          height: 100,
-        ),
-        Image.asset("assets/images/ww.png"),
-      ]),
-    );
-  }
-}
