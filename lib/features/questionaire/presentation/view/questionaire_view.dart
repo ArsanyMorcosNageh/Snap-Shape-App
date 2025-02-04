@@ -5,6 +5,35 @@ import 'dart:convert';
 
 import '../../../../core/navigation/bottom_navigation_bar.dart';
 
+class WaveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(0, size.height * 0.8);
+
+    path.quadraticBezierTo(
+      size.width * 0.25,
+      size.height * 0.9,
+      size.width * 0.5,
+      size.height * 0.8,
+    );
+
+    path.quadraticBezierTo(
+      size.width * 0.75,
+      size.height * 0.7,
+      size.width,
+      size.height * 0.8,
+    );
+
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
 class QuestionScreen extends StatefulWidget {
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
@@ -39,10 +68,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
         currentQuestionIndex++;
       });
     } else {
-      await _saveAnswersLocally(); // تخزين البيانات قبل الانتقال
+      await _saveAnswersLocally();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainView()), // يروح على MainView اللي فيها الـ NavBar
+        MaterialPageRoute(builder: (context) => MainView()),
       );
     }
   }
@@ -56,78 +85,86 @@ class _QuestionScreenState extends State<QuestionScreen> {
     bool multiSelect = currentQuestion["multiSelect"] ?? false;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Questions")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(questionText, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            if (questionType == "number") ...[
-              NumberPicker(
-                value: answers[key] ?? currentQuestion["initialValue"],
-                minValue: currentQuestion["minValue"],
-                maxValue: currentQuestion["maxValue"],
-                onChanged: (value) {
-                  setState(() {
-                    answers[key] = value;
-                  });
-                },
-              ),
-            ] else if (questionType == "choices") ...[
-              Column(
-                children: currentQuestion["options"].map<Widget>((option) {
-                  bool isSelected = multiSelect
-                      ? (answers[key] ?? []).contains(option)
-                      : answers[key] == option;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (multiSelect) {
-                          if (isSelected) {
-                            (answers[key] ?? []).remove(option);
-                          } else {
-                            answers[key] = (answers[key] ?? [])..add(option);
-                          }
-                        } else {
-                          answers[key] = option;
-                        }
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: isSelected ? Color(0xFFF9AB0B) : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: isSelected ? Color(0xFFF9AB0B) : Colors.grey, width: 2),
+     // appBar: AppBar(title: const Text("Questions")),
+      body: Stack(
+        children: [
+          ClipPath(
+            clipper: WaveClipper(),
+            child: Container(
+              height: 150,
+              color: Colors.blue,
+            ),
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(questionText, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 20),
+                      if (questionType == "number") ...[
+                        NumberPicker(
+                          value: answers[key] ?? currentQuestion["initialValue"],
+                          minValue: currentQuestion["minValue"],
+                          maxValue: currentQuestion["maxValue"],
+                          onChanged: (value) {
+                            setState(() {
+                              answers[key] = value;
+                            });
+                          },
+                        ),
+                      ] else if (questionType == "choices") ...[
+                        Column(
+                          children: currentQuestion["options"].map<Widget>((option) {
+                            bool isSelected = multiSelect
+                                ? (answers[key] ?? []).contains(option)
+                                : answers[key] == option;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (multiSelect) {
+                                    if (isSelected) {
+                                      (answers[key] ?? []).remove(option);
+                                    } else {
+                                      answers[key] = (answers[key] ?? [])..add(option);
+                                    }
+                                  } else {
+                                    answers[key] = option;
+                                  }
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: isSelected ? Color(0xFFF9AB0B) : Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: isSelected ? Color(0xFFF9AB0B) : Colors.grey, width: 2),
+                                ),
+                                child: Text(option, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: isSelected ? Colors.black : Colors.grey[700])),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _goToNextQuestion,
+                        child: const Text("Next"),
                       ),
-                      child: Text(option, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: isSelected ? Colors.black : Colors.grey[700])),
-                    ),
-                  );
-                }).toList(),
+                    ],
+                  ),
+                ),
               ),
             ],
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (questionType == "choices" && (answers[key] == null || answers[key].isEmpty)) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please select an option before proceeding.")),
-                  );
-                } else {
-                  _goToNextQuestion();
-                }
-              },
-              child: const Text("Next"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
-
 
 
 

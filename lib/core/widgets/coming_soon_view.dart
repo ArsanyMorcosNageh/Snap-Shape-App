@@ -31,7 +31,7 @@ class ComingSoonView extends StatelessWidget {
           Positioned(
             left: screenWidth * 0, // لضبط المنتصف
             child: Lottie.asset(
-              'assets/images/Animation - 1738233190255.json',
+              'assets/images/animation_coming_soon.json',
               width: screenWidth * 1.055, // يظل الأنيميشن في المنتصف
               height: screenHeight * 112,
               fit: BoxFit.contain,

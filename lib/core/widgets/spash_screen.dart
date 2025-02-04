@@ -3,17 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../utils/clip_paths.dart';
 // استيراد ملف Clip Paths
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
-    );
-  }
-}
 
 class SplashScreen extends StatelessWidget {
   @override
