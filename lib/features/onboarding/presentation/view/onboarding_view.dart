@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:snap_and_shape/core/navigation/bottom_navigation_bar.dart';
 import 'package:snap_and_shape/features/sign_in/presentation/view/sign_in_view.dart';
 import '../../../../core/utils/clip_paths.dart';
 
@@ -48,9 +48,20 @@ class _OnboardingViewState extends State<OnboardingView> {
     await prefs.setBool('onboarding_completed', true);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) =>  SignInView(),
+        builder: (context) => SignInView(),
       ),
     );
+  }
+
+  void _nextPage() {
+    if (_currentPage < onboardingData.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _navigateToHome();
+    }
   }
 
   @override
@@ -58,65 +69,46 @@ class _OnboardingViewState extends State<OnboardingView> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ClipPath(
+              clipper: TopClipper(),
+              child: Container(
+                color: const Color(0xFF670977),
+                height: MediaQuery.of(context).size.height * 0.5,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: ClipPath(
+              clipper: BottomClipper(),
+              child: Container(
+                color: const Color(0xFF670977),
+                height: MediaQuery.of(context).size.height * 0.5,
+              ),
+            ),
+          ),
           PageView.builder(
             controller: _pageController,
             onPageChanged: _onPageChanged,
             itemCount: onboardingData.length,
             itemBuilder: (context, index) {
-              return Stack(
-                children: [
-                  // ClipPath العلوي
-
-                  ClipPath(
-                    clipper: TopClipper(),
-                    child: Container(
-                      color: const Color(0xFF670977),
-                      height: MediaQuery.of(context).size.height * 0.5,
-                    ),
-                  ),
-                  // استخدام BottomClipper
-                  ClipPath(
-                    clipper: BottomClipper(),
-                    child: Container(
-                      color: const Color(0xFF670977),
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                  ),
-                  // المحتوى الرئيسي
-                  OnboardingPage(
-                    title: onboardingData[index]['title']!,
-                    description: onboardingData[index]['description']!,
-                    image: onboardingData[index]['image']!,
-                    isLastPage: index == onboardingData.length - 1,
-                    onGetStarted: _navigateToHome,
-                  ),
-                ],
+              return OnboardingPage(
+                title: onboardingData[index]['title']!,
+                description: onboardingData[index]['description']!,
+                image: onboardingData[index]['image']!,
+                isLastPage: index == onboardingData.length - 1,
+                onGetStarted: _navigateToHome,
+                onNext: _nextPage,
+                currentPage: _currentPage,
+                totalPages: onboardingData.length,
               );
             },
-          ),
-
-          // مؤشر الصفحات
-          Positioned(
-            bottom: 100,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                onboardingData.length,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentPage == index
-                        ? Color(0xFFF9AB0B)
-                        : Colors.grey,
-                  ),
-                ),
-              ),
-            ),
           ),
         ],
       ),
@@ -130,6 +122,9 @@ class OnboardingPage extends StatelessWidget {
   final String image;
   final bool isLastPage;
   final VoidCallback onGetStarted;
+  final VoidCallback onNext;
+  final int currentPage;
+  final int totalPages;
 
   const OnboardingPage({
     Key? key,
@@ -138,60 +133,98 @@ class OnboardingPage extends StatelessWidget {
     required this.image,
     required this.isLastPage,
     required this.onGetStarted,
+    required this.onNext,
+    required this.currentPage,
+    required this.totalPages,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            image,
-            width: 250,
-            height: 250,
-          ),
-          const SizedBox(height: 40),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF670977),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            SvgPicture.asset(
+              image,
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.height * 0.25,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 40),
-          if (isLastPage)
-            ElevatedButton(
-              onPressed: onGetStarted,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF9AB0B),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
-                ),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              style: GoogleFonts.amaranth(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              child: const Text(
-                'Get Started',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                description,
+                style: GoogleFonts.amaranth(
+                  fontSize: 16,
+                  color: Colors.black,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
-        ],
+          ],
+        ),
+        Column(
+          children: [
+            const SizedBox(height: 60),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: ElevatedButton(
+                onPressed: isLastPage ? onGetStarted : onNext,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isLastPage
+                      ? const Color(0xFFF9AB0B)
+                      : const Color(0xFF670977),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text(
+                  isLastPage ? 'Get Started' : 'Next',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+          Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: List.generate(
+    totalPages,
+    (index) => AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      width: currentPage == index ? 12 : 8, // تغيير الحجم عند التحديد
+      height: currentPage == index ? 12 : 8,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: currentPage == index
+            ? const Color(0xFFF9AB0B)
+            : Colors.grey,
       ),
+    ),
+  ),
+),
+            SizedBox(height: 0),
+          ],
+        ),
+      ],
     );
   }
 }
