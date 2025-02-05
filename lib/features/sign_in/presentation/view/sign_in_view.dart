@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:snap_and_shape/features/questionaire/presentation/view/questionaire_view.dart';
-
-import '../../../../core/navigation/bottom_navigation_bar.dart';
 import '../../../../core/widgets/auth_content.dart';
 import '../../../forgot_password/presentation/view/forgot_password_view.dart';
 import '../../../sign_up/presentation/view/sign_up_view.dart';

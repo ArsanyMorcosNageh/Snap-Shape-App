@@ -3,9 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
 import '../../../../core/navigation/bottom_navigation_bar.dart';
-import '../../../../core/utils/clip_paths.dart';
 import '../../../../core/utils/clippers.dart';
 
 class WaveClipper extends CustomClipper<Path> {
@@ -46,7 +44,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   int currentQuestionIndex = 0;
   final double _buttonWidth = 300;
   final double _buttonHeight = 60;
-  final double _imageSize = 70;
+ // final double _imageSize = 70;
 
   final List<Map<String, dynamic>> questions = [
     {"type": "choices", "question": "What is your gender?", "options": ["Male", "Female"], "key": "gender", "multiSelect": false},
