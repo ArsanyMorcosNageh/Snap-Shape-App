@@ -208,7 +208,7 @@ class OnboardingPage extends StatelessWidget {
   children: List.generate(
     totalPages,
     (index) => AnimatedContainer(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 350),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       width: currentPage == index ? 12 : 8, // تغيير الحجم عند التحديد
       height: currentPage == index ? 12 : 8,

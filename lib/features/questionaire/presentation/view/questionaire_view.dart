@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../../../../core/navigation/bottom_navigation_bar.dart';
+import '../../../../core/utils/clip_paths.dart';
+import '../../../../core/utils/clippers.dart';
 
 class WaveClipper extends CustomClipper<Path> {
   @override
@@ -41,6 +44,9 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionScreenState extends State<QuestionScreen> {
   int currentQuestionIndex = 0;
+  final double _buttonWidth = 300;
+  final double _buttonHeight = 60;
+  final double _imageSize = 70;
 
   final List<Map<String, dynamic>> questions = [
     {"type": "choices", "question": "What is your gender?", "options": ["Male", "Female"], "key": "gender", "multiSelect": false},
@@ -83,79 +89,122 @@ class _QuestionScreenState extends State<QuestionScreen> {
     String questionType = currentQuestion["type"];
     String key = currentQuestion["key"];
     bool multiSelect = currentQuestion["multiSelect"] ?? false;
+    bool isLastPage = currentQuestionIndex == questions.length - 1;
 
     return Scaffold(
-     // appBar: AppBar(title: const Text("Questions")),
+      backgroundColor: Colors.white,
       body: Stack(
-        children: [
-          ClipPath(
-            clipper: WaveClipper(),
-            child: Container(
-              height: 150,
-              color: Colors.blue,
-            ),
-          ),
+        children: [AnimatedSwitcher(
+  duration: const Duration(milliseconds: 300), // سرعة التغيير
+  transitionBuilder: (Widget child, Animation<double> animation) {
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  },
+  child: ClipPath(
+    key: ValueKey<int>(currentQuestionIndex), // لازم نغير الـ Key علشان يحصل الأنيميشن
+    clipper: currentQuestionIndex.isEven ? WaveClipperRight() : WaveClipperLeft(),
+    child: Container(
+      height: 150,
+      color: const Color(0xFF670977),
+    ),
+  ),
+),
           Column(
             children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(questionText, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 20),
-                      if (questionType == "number") ...[
-                        NumberPicker(
-                          value: answers[key] ?? currentQuestion["initialValue"],
-                          minValue: currentQuestion["minValue"],
-                          maxValue: currentQuestion["maxValue"],
-                          onChanged: (value) {
-                            setState(() {
-                              answers[key] = value;
-                            });
-                          },
-                        ),
-                      ] else if (questionType == "choices") ...[
-                        Column(
-                          children: currentQuestion["options"].map<Widget>((option) {
-                            bool isSelected = multiSelect
-                                ? (answers[key] ?? []).contains(option)
-                                : answers[key] == option;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (multiSelect) {
-                                    if (isSelected) {
-                                      (answers[key] ?? []).remove(option);
-                                    } else {
-                                      answers[key] = (answers[key] ?? [])..add(option);
-                                    }
+              SizedBox(height:MediaQuery.of(context).size.height * 0.3),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(questionText, 
+                        style: GoogleFonts.amaranth(
+                          fontSize: 20, 
+                          fontWeight: FontWeight.bold
+                        )),
+                    const SizedBox(height: 20),
+                    if (questionType == "number") ...[
+                      NumberPicker(
+                        value: answers[key] ?? currentQuestion["initialValue"],
+                        minValue: currentQuestion["minValue"],
+                        maxValue: currentQuestion["maxValue"],
+                        onChanged: (value) {
+                          setState(() {
+                            answers[key] = value;
+                          });
+                        },
+                      ),
+                    ] else if (questionType == "choices") ...[
+                      Column(
+                        children: currentQuestion["options"].map<Widget>((option) {
+                          bool isSelected = multiSelect
+                              ? (answers[key] ?? []).contains(option)
+                              : answers[key] == option;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (multiSelect) {
+                                  if (isSelected) {
+                                    (answers[key] ?? []).remove(option);
                                   } else {
-                                    answers[key] = option;
+                                    answers[key] = (answers[key] ?? [])..add(option);
                                   }
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  color: isSelected ? Color(0xFFF9AB0B) : Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: isSelected ? Color(0xFFF9AB0B) : Colors.grey, width: 2),
+                                } else {
+                                  answers[key] = option;
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: _buttonWidth,
+                              height: _buttonHeight,
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                color: isSelected ? const Color(0xFFF9AB0B) : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: isSelected ? const Color(0xFFF9AB0B) : Colors.grey, 
+                                  width: 2
                                 ),
-                                child: Text(option, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: isSelected ? Colors.black : Colors.grey[700])),
                               ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _goToNextQuestion,
-                        child: const Text("Next"),
+                              child: Center(
+                                child: Text(
+                                  option,
+                                  style: GoogleFonts.amaranth(
+                                    color: isSelected ? Colors.black : Colors.grey[900],
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
-                  ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: ElevatedButton(
+                        onPressed: _goToNextQuestion,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isLastPage ? const Color(0xFFF9AB0B) : const Color(0xFF670977),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text(
+                          isLastPage ? 'Get Started' : 'Next',
+                          style: GoogleFonts.amaranth(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -165,9 +214,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     );
   }
 }
-
-
-
 
 
 
