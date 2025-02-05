@@ -21,13 +21,13 @@ class _OnboardingViewState extends State<OnboardingView> {
       'title': 'Welcome,\n to Snap & Shape...',
       'description':
           'Scala, track your meals, receive personalized food recommendations, and enjoy tailored exercise plans just for you.',
-      'image': 'assets/images/test.svg',
+      'image': 'assets/images/2.svg',
     },
     {
       'title': 'Smart Food Recognition',
       'description':
           'Snap a photo of your meal, and we will do the rest!\nGet accurate measurements and analyze the quality of your food effortlessly.',
-      'image': 'assets/images/test.svg',
+      'image': 'assets/images/1.svg',
     },
     {
       'title': 'Track Your Progress',

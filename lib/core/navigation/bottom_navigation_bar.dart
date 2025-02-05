@@ -1,6 +1,7 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snap_and_shape/features/home/presentation/view/home_view.dart';
 
 import '../../features/exercise_recommendation/presentation/view/exercise_recommendation_view.dart';
@@ -37,10 +38,10 @@ class _MainScreenState extends State<MainView> {
         animationDuration: Duration(milliseconds: 400),
         height: 60,
         items: [
-          Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', width: 30, height: 30),
-          Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', width: 30, height: 30),
-          Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', width: 30, height: 30),
-          Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', width: 30, height: 30),
+          SvgPicture.asset('assets/images/home.svg', width: 26, height:26),
+          SvgPicture.asset('assets/images/dish.svg', width: 25, height: 25),
+          SvgPicture.asset('assets/images/dumbbell.svg', width: 25, height: 25),
+          SvgPicture.asset('assets/images/profile.svg', width: 25, height: 25),
         ],
         onTap: (index) {
           setState(() {
