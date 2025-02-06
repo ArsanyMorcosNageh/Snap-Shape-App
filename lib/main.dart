@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:snap_and_shape/core/cache_helper/cache_helper.dart';
-import 'features/onboarding/presentation/view/onboarding_view.dart';
+import 'features/onboarding/presentation/view/onboarding_view.dart';   
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
