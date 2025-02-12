@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:snap_and_shape/core/cache_helper/cache_helper.dart';
+import 'package:snap_and_shape/core/widgets/spash_screen.dart';
 import 'features/onboarding/presentation/view/onboarding_view.dart';   
 
 void main() async {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
 
 
    //   home: SplashScreen(),
-        home: const OnboardingView(),
+        home:  SplashView(),
       //home: onboardingCompleted ? const HomeView() : const OnboardingView(),
     );
   }
