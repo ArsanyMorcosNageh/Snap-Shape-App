@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthContent extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AuthContentState extends State<AuthContent> {
               Expanded(
                 flex: 3, // زودنا الارتفاع هنا
                 child: Center(
-                  child: Image.asset(widget.image, height: 180), // زيادة حجم الصورة
+                  child: SvgPicture.asset(widget.image, height: 250),
                 ),
               ),
               Expanded(

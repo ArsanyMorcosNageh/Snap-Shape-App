@@ -9,7 +9,7 @@ class SignInView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthContent(
       title: 'Sign In',
-      image: 'assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png',      fields: ['Email', 'Password'],
+      image: 'assets/images/Login.svg',      fields: ['Email', 'Password'],
       buttonText: 'Next',
       onButtonPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => QuestionScreen()));

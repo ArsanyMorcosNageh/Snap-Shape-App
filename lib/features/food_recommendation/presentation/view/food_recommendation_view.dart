@@ -91,7 +91,7 @@ class _FoodRecommendationViewState extends State<FoodRecommendationView> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Column(
               children: [
-                Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', height: 100,width: 100, fit: BoxFit.cover),
+                Image.asset('assets/images/food.png', height: 100,width: 100, fit: BoxFit.cover),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(

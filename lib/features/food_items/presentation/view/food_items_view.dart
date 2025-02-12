@@ -10,7 +10,7 @@ class ItemView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', height: 200, width: double.infinity, fit: BoxFit.cover),
+            Image.asset('assets/images/food.png', height: 200, width: double.infinity, fit: BoxFit.cover),
             SizedBox(height: 16),
             Text('Ingredients:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Text('- Chicken\n- Tortilla bread\n- Vegetables\n- Cheese'),
@@ -22,7 +22,7 @@ class ItemView extends StatelessWidget {
                 children: [
                   Text('340 Kcal', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  Image.asset('assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png', height: 150),
+                  Image.asset('assets/images/food.png', height: 150),
                 ],
               ),
             ),

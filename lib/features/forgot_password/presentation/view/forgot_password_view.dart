@@ -10,7 +10,7 @@ class ForgotPasswordView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthContent(
       title: 'Forgot Password',
-      image: 'assets/images/WhatsApp_Image_2024-09-26_at_3.39.30_PM-removebg-preview.png',
+      image: 'assets/images/forgot_password.svg',
       fields: ['Enter your email address'],
       buttonText: 'Submit',
       onButtonPressed: () {
