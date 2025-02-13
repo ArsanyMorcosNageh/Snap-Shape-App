@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:snap_and_shape/core/cache_helper/cache_helper.dart';
 import 'package:snap_and_shape/core/widgets/spash_screen.dart';
-import 'features/onboarding/presentation/view/onboarding_view.dart';   
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // final prefs = await SharedPreferences.getInstance();
@@ -28,8 +26,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-
-   //   home: SplashScreen(),
         home:  SplashView(),
       //home: onboardingCompleted ? const HomeView() : const OnboardingView(),
     );

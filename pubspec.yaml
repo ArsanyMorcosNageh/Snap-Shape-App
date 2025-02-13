@@ -44,6 +44,7 @@ dependencies:
   curved_navigation_bar: ^1.0.6
   lottie: ^2.3.2
   flutter_staggered_grid_view: ^0.7.0
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,11 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/images/App_Icon.png"
   min_sdk_android: 21
+
+flutter_native_splash:
+  android: false
+  ios: false
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
